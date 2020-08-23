@@ -2,16 +2,35 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "build APIServer",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/WebAPI/WebAPI.csproj",
+                "${workspaceFolder}/APIServer/Mh.WebAPI.APIServer.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build IdentityServer",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/IdentityServer/Mh.WebAPI.IdentityServer.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build all",
+            "dependsOn": [
+                "build APIServer",
+                "build IdentityServer"
+            ]
         },
         {
             "label": "publish",
@@ -19,7 +38,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/WebAPI/WebAPI.csproj",
+                "${workspaceFolder}/APIServer/Mh.WebAPI.APIServer.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -32,7 +51,7 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/WebAPI/WebAPI.csproj",
+                "${workspaceFolder}/APIServer/Mh.WebAPI.APIServer.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

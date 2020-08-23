@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>Mh.WebAPI</AssemblyName>
+    <AssemblyName>Mh.WebAPI.APIServer</AssemblyName>
+    <RootNamespace>Mh.WebAPI.APIServer</RootNamespace>
     <Authors>Minhyung Park</Authors>
   </PropertyGroup>
 
@@ -12,7 +13,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
-    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Common\Mh.WebAPI.Common.csproj" />
   </ItemGroup>
 
 
