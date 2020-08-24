@@ -30,7 +30,12 @@
             "dependsOn": [
                 "build APIServer",
                 "build IdentityServer"
-            ]
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         },
         {
             "label": "publish",
