@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Mh.WebAPI.Client</AssemblyName>
+    <RootNamespace>Mh.WebAPI.Client</RootNamespace>
+    <Authors>Minhyung Park</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IdentityModel" Version="4.3.1" />
+  </ItemGroup>
+
+</Project>

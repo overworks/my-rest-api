@@ -5,6 +5,17 @@
    "version": "0.2.0",
    "configurations": [
         {
+            "name": ".NET Core Launch (console) - Client",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build Client",
+            "program": "${workspaceFolder}/Client/bin/Debug/netcoreapp3.1/Mh.WebAPI.Client.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Client",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
             "name": ".NET Core Launch (web) - API Server",
             "type": "coreclr",
             "request": "launch",
@@ -33,7 +44,7 @@
             "preLaunchTask": "build IdentityServer",
             "program": "${workspaceFolder}/IdentityServer/bin/Debug/netcoreapp3.1/Mh.WebAPI.IdentityServer.dll",
             "args": [],
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/IdentityServer",
             "stopAtEntry": false,
             "serverReadyAction": {
                 "action": "openExternally",
