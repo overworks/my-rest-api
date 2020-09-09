@@ -5,12 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Mh.WebAPI.Core.Data;
 
 namespace Mh.WebAPI.APIServer
 {
@@ -27,6 +30,13 @@ namespace Mh.WebAPI.APIServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                
+            });
+
+            services.AddIdentity<ApplicationDbContext, IdentityRole>();
 
             // accepts any access token issued by identity server
             services.AddAuthentication("Bearer")
@@ -58,7 +68,7 @@ namespace Mh.WebAPI.APIServer
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
+            else if (env.IsProduction())
             {
                 app.UseHttpsRedirection();
             }

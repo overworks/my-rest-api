@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 
-using Mh.WebAPI.IdentityServer.Models;
+using Mh.WebAPI.Core.Models;
 
 
 namespace Mh.WebAPI.IdentityServer.Controllers

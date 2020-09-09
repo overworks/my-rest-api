@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Mh.WebAPI.IdentityServer.Models
+namespace Mh.WebAPI.Core.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        
+
     }
 }

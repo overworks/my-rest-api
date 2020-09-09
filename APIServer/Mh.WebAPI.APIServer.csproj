@@ -18,4 +18,8 @@
     <ProjectReference Include="..\Common\Mh.WebAPI.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Mh.WebAPI.Core.csproj" />
+  </ItemGroup>
+
 </Project>
