@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIServer", "WebAPI\Mh.WebAPI.APIServer.csproj", "{CCA4794D-18FC-45FA-BEE0-9F646BECDB17}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIServer", "APIServer\Mh.WebAPI.APIServer.csproj", "{CCA4794D-18FC-45FA-BEE0-9F646BECDB17}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Mh.WebAPI.Client.csproj", "{D7327AEC-3318-4DBF-8A68-D55014FDD5B8}"
 EndProject

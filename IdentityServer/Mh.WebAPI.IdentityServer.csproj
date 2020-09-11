@@ -1,20 +1,19 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Mh.WebAPI.IdentityServer</AssemblyName>
     <RootNamespace>Mh.WebAPI.IdentityServer</RootNamespace>
     <Authors>Minhyung Park</Authors>
+    <UserSecretsId>94115486-a8db-44d7-9feb-06dc02b4685c</UserSecretsId>
   </PropertyGroup>
-  
   <ItemGroup>
     <PackageReference Include="IdentityServer4.AspNetIdentity" Version="4.0.0" />
     <PackageReference Include="IdentityServer4.EntityFramework" Version="4.0.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.7">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.8">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.7">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -22,9 +21,7 @@
     <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.2" />
   </ItemGroup>
-  
   <ItemGroup>
     <ProjectReference Include="..\Core\Mh.WebAPI.Core.csproj" />
-    <ProjectReference Include="..\Common\Mh.WebAPI.Common.csproj" />
   </ItemGroup>
 </Project>

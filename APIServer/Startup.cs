@@ -1,18 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Mh.WebAPI.Core.Data;
 
 namespace Mh.WebAPI.APIServer
@@ -33,7 +26,10 @@ namespace Mh.WebAPI.APIServer
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
-                
+                var connectionString = Configuration["Db:ConnectionString"];
+                var version = Configuration["Db:Version"];
+
+                options.UseMySql(connectionString, mySqlOptions => mySqlOptions.ServerVersion(version));
             });
 
             services.AddIdentity<ApplicationDbContext, IdentityRole>();
