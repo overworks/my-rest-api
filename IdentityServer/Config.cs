@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
-
-using IdentityServer4.Models;
 using System.Collections.Generic;
+using IdentityServer4;
+using IdentityServer4.Models;
 
 namespace IdentityServer
 {
@@ -12,13 +12,15 @@ namespace IdentityServer
         public static IEnumerable<IdentityResource> IdentityResources =>
             new IdentityResource[]
             { 
-                new IdentityResources.OpenId()
+                new IdentityResources.OpenId(),
+                new IdentityResources.Profile(),
+                new IdentityResources.Email()
             };
 
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
             {
-                new ApiScope("api1", "My API")
+                new ApiScope("api1", "My API version 1")
             };
 
         public static IEnumerable<Client> Clients =>
@@ -29,7 +31,7 @@ namespace IdentityServer
                     ClientId = "client",
 
                     // no interactive user, use the clientid/secret for authentication
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
 
                     // secret for authentication
                     ClientSecrets =
@@ -38,7 +40,13 @@ namespace IdentityServer
                     },
 
                     // scopes that client has access to
-                    AllowedScopes = { "api1" }
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.Email,
+                        "api1"
+                    }
                 }
             };
     }

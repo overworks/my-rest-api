@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
+using System.Linq;
 using System.Reflection;
 
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 using IdentityServer4;
 using IdentityServer4.EntityFramework.DbContexts;
@@ -53,10 +55,11 @@ namespace IdentityServer
 
             var builder = services.AddIdentityServer(options =>
             {
-                options.Events.RaiseErrorEvents = true;
-                options.Events.RaiseInformationEvents  = true;
-                options.Events.RaiseFailureEvents  = true;
-                options.Events.RaiseSuccessEvents  = true;
+                var eventOptions = options.Events;
+                eventOptions.RaiseErrorEvents = true;
+                eventOptions.RaiseInformationEvents  = true;
+                eventOptions.RaiseFailureEvents  = true;
+                eventOptions.RaiseSuccessEvents  = true;
 
                 // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
                 options.EmitStaticAudienceClaim = true;
@@ -76,19 +79,32 @@ namespace IdentityServer
                         builder.UseMySql(connectionString, mySqlOptions =>
                             mySqlOptions.ServerVersion(version).MigrationsAssembly(migrationAssembly));
                     };
-                });
+                })
+                .AddJwtBearerClientAuthentication();
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
 
-            services.AddAuthentication(options =>
-            {
-                
-            });
+            services.AddAuthentication()
+                .AddOpenIdConnect("oidc", options =>
+                {
+                    options.Authority = "http://localhost:5000";
+                    options.ClientId = "client";
+                    options.ClientSecret = "secret";
+
+                    options.RequireHttpsMetadata = false;
+
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+
+                    };
+                });
         }
 
         public void Configure(IApplicationBuilder app)
         {
+            InitializeDatabase(app);
+
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -106,6 +122,43 @@ namespace IdentityServer
             //{
             //    endpoints.MapDefaultControllerRoute();
             //});
+        }
+
+        private void InitializeDatabase(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+
+                var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+                context.Database.Migrate();
+                if (!context.Clients.Any())
+                {
+                    foreach (var client in Config.Clients)
+                    {
+                        context.Clients.Add(client.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+
+                if (!context.IdentityResources.Any())
+                {
+                    foreach (var resource in Config.IdentityResources)
+                    {
+                        context.IdentityResources.Add(resource.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+
+                if (!context.ApiScopes.Any())
+                {
+                    foreach (var resource in Config.ApiScopes)
+                    {
+                        context.ApiScopes.Add(resource.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+            }
         }
     }
 }

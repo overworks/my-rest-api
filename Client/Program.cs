@@ -11,12 +11,23 @@ namespace Client
         {
             var client = new HttpClient();
 
-            var disco = await client.GetDiscoveryDocumentAsync("http://localhost:5000");
+            var disco = await client.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
+            {
+                Address = "http://localhost:5000",
+                Policy = new DiscoveryPolicy
+                {
+                    RequireHttps = false
+                }
+            });
+
             if (disco.IsError)
             {
                 Console.WriteLine(disco.Error);
                 return;
             }
+
+            Console.WriteLine(disco.Json);
+            Console.WriteLine("\n\n");
 
             // request token
             var tokenResponse = await client.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
@@ -25,7 +36,7 @@ namespace Client
                 ClientId = "client",
                 ClientSecret = "secret",
 
-                Scope = "api1"
+                Scope = "openid"
             });
 
             if (tokenResponse.IsError)
@@ -40,7 +51,7 @@ namespace Client
             var apiClient = new HttpClient();
             apiClient.SetBearerToken(tokenResponse.AccessToken);
             
-            var response = await apiClient.GetAsync("https://localhost:6001/identity");
+            var response = await apiClient.GetAsync("http://localhost:6000/identity");
             if (!response.IsSuccessStatusCode)
             {
                 Console.WriteLine(response.StatusCode);

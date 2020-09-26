@@ -1,3 +1,5 @@
+using System.Reflection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -7,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Mh.WebAPI.Core.Data;
+using Mh.WebAPI.Core.Models;
 
 namespace Mh.WebAPI.APIServer
 {
@@ -26,17 +29,21 @@ namespace Mh.WebAPI.APIServer
 
             services.AddDbContext<ApplicationDbContext>(options =>
             {
+                var migrationAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
                 var connectionString = Configuration["Db:ConnectionString"];
                 var version = Configuration["Db:Version"];
 
-                options.UseMySql(connectionString, mySqlOptions => mySqlOptions.ServerVersion(version));
+                options.UseMySql(connectionString, mySqlOptions =>
+                    mySqlOptions.ServerVersion(version).MigrationsAssembly(migrationAssembly));
             });
 
-            services.AddIdentity<ApplicationDbContext, IdentityRole>();
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             // accepts any access token issued by identity server
-            services.AddAuthentication("Bearer")
-                .AddJwtBearer("Bearer", options =>
+            services.AddAuthentication(options => options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
                     options.Authority = Configuration["IdentityServer:Url"];
                     options.RequireHttpsMetadata = false;
